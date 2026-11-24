@@ -1,0 +1,36 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Contacto · Ferretería{% endblock %}
+
+{% block extra_head %}
+<style>
+    label { color: #f5d08b; font-weight: 600; margin-bottom: 0.4rem; }
+    .form-select { background-color: rgba(255,255,255,0.03); border: 1px solid rgba(245,208,139,0.25); color: #fff; }
+    .form-select:focus { background-color: rgba(255,255,255,0.05); border-color: #f0b36a; color: #fff; box-shadow: none; }
+    .form-select option { color: #ffffff; background: #17110d; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="panel" style="max-width: 760px;">
+    <h2 class="mb-1">Contáctanos</h2>
+    <p class="stat mb-4">Cuéntanos qué necesitas y te responderemos por correo.</p>
+
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors|join:', ' }}</div>
+        {% endif %}
+        {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="text-danger small mt-1">{{ field.errors|join:', ' }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-ornn w-100">Enviar consulta</button>
+    </form>
+</div>
+{% endblock %}

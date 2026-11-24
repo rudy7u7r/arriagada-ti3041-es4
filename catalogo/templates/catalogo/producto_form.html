@@ -1,0 +1,40 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}{{ titulo }} · Ferretería{% endblock %}
+
+{% block extra_head %}
+<style>
+    label { color: #f5d08b; font-weight: 600; margin-bottom: 0.4rem; }
+    .info-note { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-top: 0.2rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="panel" style="max-width: 760px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{{ titulo }}</h2>
+        <a href="{% url 'productos_crud' %}" class="btn btn-outline-light">Cancelar</a>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.name == 'imagen_url' %}
+                        <div class="info-note">Pega la URL directa de la imagen. Si también subes un archivo, se guardará el archivo.</div>
+                    {% elif field.name == 'imagen_archivo' %}
+                        <div class="info-note">Elige una imagen de tu equipo; se guardará en la carpeta media del proyecto.</div>
+                    {% elif field.name == 'imagen' %}
+                        <div class="info-note">Ruta o URL de imagen actual. Déjala vacía si usarás una URL o subirás un archivo.</div>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="text-danger small mt-1">{{ field.errors|join:', ' }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-ornn w-100">Guardar</button>
+        </form>
+</div>
+{% endblock %}

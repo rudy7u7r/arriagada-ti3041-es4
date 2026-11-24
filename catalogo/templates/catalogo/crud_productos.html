@@ -1,0 +1,77 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Gestión de productos · Ferretería{% endblock %}
+
+{% block extra_head %}
+<style>
+    .img-thumb { width: 72px; height: 72px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(245,208,139,0.2); background: #1c1815; }
+    .badge-stock { display: inline-block; padding: 0.35rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
+    .stock-ok { background: rgba(40,167,69,0.15); color: #7ae4a0; }
+    .stock-no { background: rgba(220,53,69,0.15); color: #ff9ca2; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="panel">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <div>
+                <h2 class="mb-1">Gestión de productos</h2>
+                <small class="text-light text-opacity-75">CRUD personalizado sin usar Django Admin</small>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{% url 'lista_productos' %}" class="btn btn-outline-light">Volver a tienda</a>
+                <a href="{% url 'producto_nuevo' %}" class="btn btn-ornn">Nuevo producto</a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                    <tr>
+                        <td>#{{ producto.id }}</td>
+                        <td>
+                            {% if producto.imagen %}
+                                <img src="{{ producto.imagen }}" class="img-thumb" onerror="this.src='https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=900&q=80';" alt="{{ producto.nombre }}">
+                            {% else %}
+                                <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=900&q=80" class="img-thumb" alt="Sin imagen">
+                            {% endif %}
+                        </td>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.categoria }}</td>
+                        <td>${{ producto.precio }}</td>
+                        <td>
+                            {% if producto.stock > 0 %}
+                                <span class="badge-stock stock-ok">{{ producto.stock }}</span>
+                            {% else %}
+                                <span class="badge-stock stock-no">Sin stock</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'producto_editar' producto.id %}" class="btn btn-sm btn-outline-light">Editar</a>
+                                <a href="{% url 'producto_eliminar' producto.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-4 text-light text-opacity-75">No hay productos registrados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Eliminar producto · Ferretería{% endblock %}
+
+{% block content %}
+<div class="panel" style="max-width: 560px;">
+    <h2 class="mb-3">¿Eliminar este producto?</h2>
+    <p class="mb-1"><strong>{{ producto.nombre }}</strong></p>
+    <p class="stat">{{ producto.categoria }} · ${{ producto.precio }} · {{ producto.stock }} en stock</p>
+    <p>Esta acción no se puede deshacer.</p>
+
+    <form method="POST" class="d-flex gap-2">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+        <a href="{% url 'productos_crud' %}" class="btn btn-outline-light">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

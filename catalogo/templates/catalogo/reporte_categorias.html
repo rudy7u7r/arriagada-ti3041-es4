@@ -1,0 +1,45 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Resumen por categoría · Ferretería{% endblock %}
+
+{% block content %}
+<div class="panel">
+    <h2 class="mb-1">Resumen por categoría</h2>
+    <p class="stat mb-4">Cantidad de productos, precio promedio y stock total de cada categoría.</p>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th class="num">Productos</th>
+                    <th class="num">Precio promedio</th>
+                    <th class="num">Stock total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fila in resumen %}
+                <tr>
+                    <td>{{ fila.categoria }}</td>
+                    <td class="num">{{ fila.cantidad }}</td>
+                    <td class="num">${{ fila.precio_promedio }}</td>
+                    <td class="num">{{ fila.stock_total }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center py-4">Aún no hay productos para resumir.</td></tr>
+                {% endfor %}
+            </tbody>
+            {% if resumen %}
+            <tfoot>
+                <tr>
+                    <td>Total ({{ total_categorias }} categorías)</td>
+                    <td class="num">{{ totales.total_productos }}</td>
+                    <td class="num">${{ totales.precio_promedio }}</td>
+                    <td class="num">{{ totales.total_stock }}</td>
+                </tr>
+            </tfoot>
+            {% endif %}
+        </table>
+    </div>
+</div>
+{% endblock %}

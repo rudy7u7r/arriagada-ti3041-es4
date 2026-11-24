@@ -1,0 +1,49 @@
+{% extends 'catalogo/base.html' %}
+
+{% block title %}Stock crítico · Ferretería{% endblock %}
+
+{% block content %}
+<div class="panel">
+    <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+        <div>
+            <h2 class="mb-1">Stock crítico</h2>
+            <p class="stat mb-0">
+                <strong>{{ cantidad }}</strong> productos con {{ umbral }} unidades o menos
+                {% if sin_stock %}· <span class="stock-cero">{{ sin_stock }} sin stock</span>{% endif %}
+            </p>
+        </div>
+        <form method="GET" class="d-flex gap-2 align-items-end">
+            <div>
+                <label for="umbral" class="form-label mb-1">Umbral de stock</label>
+                <input type="number" min="0" name="umbral" id="umbral" value="{{ umbral }}" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-ornn">Filtrar</button>
+        </form>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th class="num">Precio</th>
+                    <th class="num">Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr>
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ producto.categoria }}</td>
+                    <td class="num">${{ producto.precio }}</td>
+                    <td class="num {% if producto.stock == 0 %}stock-cero{% endif %}">{{ producto.stock }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center py-4">Ningún producto tiene {{ umbral }} unidades o menos.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
